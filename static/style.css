@@ -263,3 +263,46 @@ button:disabled {
   cursor: wait;
   transform: none;
 }
+
+/* Carousel */
+
+.personality-picker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.personality-picker > div {
+  flex: 1;
+  text-align: center;
+}
+
+.personality-picker strong {
+  display: block;
+  font-size: 16px;
+}
+
+.personality-picker p {
+  margin-top: 5px;
+  color: #8f9bb3;
+  font-size: 13px;
+}
+
+.personality-picker button {
+  padding: 6px 16px;
+  font-size: 26px;
+}
+
+.chat-history {
+  min-height: 0;
+}
+
+header,
+.personality-picker,
+.input-area {
+  flex-shrink: 0;
+}

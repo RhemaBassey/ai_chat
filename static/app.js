@@ -4,13 +4,57 @@ const sendButton = document.querySelector(".input-area button");
 
 let isSending = false;
 
+const personalities = [
+  {
+    id: "spongebob",
+    name: "🧽 SpongeBob",
+    description: "Cheerful, goofy, and optimistic",
+  },
+  {
+    id: "anime",
+    name: "🌸 UwU Anime",
+    description: "Bubbly, cute, and encouraging",
+  },
+  {
+    id: "caveman",
+    name: "🪨 Caveman",
+    description: "Few words. Big brain. Good code.",
+  },
+];
+
+let personalityIndex = 0;
+
+const personalityName = document.getElementById("personality-name");
+const personalityDescription = document.getElementById(
+  "personality-description",
+);
+
+function changePersonality(direction) {
+  // Keep the selection consistent while a reply is being generated.
+  if (isSending) return;
+
+  personalityIndex =
+    (personalityIndex + direction + personalities.length) %
+    personalities.length;
+
+  const personality = personalities[personalityIndex];
+
+  personalityName.textContent = personality.name;
+  personalityDescription.textContent = personality.description;
+}
+
+document
+  .getElementById("previous-personality")
+  .addEventListener("click", () => changePersonality(-1));
+
+document
+  .getElementById("next-personality")
+  .addEventListener("click", () => changePersonality(1));
+
 function addMessage(content, role) {
   const div = document.createElement("div");
 
-  div.classList.add(
-    "message",
-    role === "user" ? "user-message" : "ai-message"
-  );
+  div.classList.add("message", role === "user" ? "user-message" : "ai-message");
 
   div.textContent = content;
   chatHistory.appendChild(div);
@@ -72,7 +116,10 @@ async function sendMessage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ message }),
+      body: JSON.stringify({
+        message,
+        personality: personalities[personalityIndex].id,
+      }),
     });
 
     if (!response.ok) {
@@ -87,8 +134,7 @@ async function sendMessage() {
     console.error(error);
 
     if (loadingBubble) {
-      loadingBubble.textContent =
-        "Something went wrong. Please try again.";
+      loadingBubble.textContent = "Something went wrong. Please try again.";
     }
   } finally {
     loadingBubble?.classList.remove("loading");
